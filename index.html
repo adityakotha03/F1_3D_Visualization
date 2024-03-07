@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Location Animation with 3D Plane</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="controls">
+        <label for="startTime">Start Time:</label>
+        <input type="datetime-local" id="startTime" value="2024-03-02T16:00">
+        <label for="endTime">End Time:</label>
+        <input type="datetime-local" id="endTime" value="2024-03-02T16:10">
+        <label for="driverSelect">Driver:</label>
+        <select id="driverSelect">
+            <option value="1">Driver 1</option>
+            <option value="44">Driver 44</option>
+            <option value="55">Driver 55</option>
+            <option value="63">Driver 63</option>
+        </select>
+        <button onclick="fetchDriverDetails()">Get Driver Details</button>
+    </div>
+
+    <div id="driverDetails" class="driver-details"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="main.js" type="module"></script>
+</body>
+</html>
