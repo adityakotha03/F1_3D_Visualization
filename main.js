@@ -27,12 +27,26 @@ const driverData = {};
 
 // Function to create a cube for each driver
 function createDriverCubes() {
+    const loader = new THREE.GLTFLoader();
+    
     Object.keys(driverData).forEach((driverId, index) => {
-        const geometry = new THREE.BoxGeometry(5, 5, 5);
-        const material = new THREE.MeshBasicMaterial({ color: colors[index % colors.length] });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-        driverData[driverId].cube = cube;
+        loader.load('car/scene.gltf', function (gltf) {
+            const model = gltf.scene;
+            model.scale.set(3, 3, 3); // Scale the model down
+            model.rotation.x = Math.PI / 2;
+            model.rotation.y = -Math.PI;
+            model.traverse(function (object) {
+                if (object.isMesh) {
+                    object.castShadow = true;
+                    // Set the color of the mesh
+                    object.material.color.setHex(colors[index % colors.length]);
+                }
+            });
+            scene.add(model);
+            driverData[driverId].model = model;
+        }, undefined, function (error) {
+            console.error(error);
+        });
     });
 }
 
@@ -60,7 +74,7 @@ function animate() {
     Object.values(driverData).forEach(driver => {
         if (driver.length > 0) {
             const position = driver.shift();
-            driver.cube.position.set(position.x, position.y, 0);
+            driver.model.position.set(position.x, position.y, 0);
         }
     });
     controls.update(); // Only required if damping or auto-rotation is enabled
