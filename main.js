@@ -35,6 +35,7 @@ function createDriverCubes() {
             model.scale.set(3, 3, 3); // Scale the model down
             model.rotation.x = Math.PI / 2;
             model.rotation.y = -Math.PI;
+            //model.rotation.z = -Math.PI/2;
             model.traverse(function (object) {
                 if (object.isMesh) {
                     object.castShadow = true;
@@ -67,14 +68,29 @@ function createTexturedPlane(imageFile) {
 // Inside your initAnimation function or after scene and renderer have been initialized
  // Make sure to use the correct path to the image file
 
+ const axesHelper = new THREE.AxesHelper(5); // The parameter defines the size of the axes
+ scene.add(axesHelper);
 
 // Function to animate driver cubes
 function animate() {
     requestAnimationFrame(animate);
     Object.values(driverData).forEach(driver => {
         if (driver.length > 0) {
-            const position = driver.shift();
-            driver.model.position.set(position.x, position.y, 0);
+
+            const newPosition = driver.shift();
+            const oldPosition = driver.model.position;
+            
+            // Calculate the angle in radians between the old and new position
+            const angle = Math.atan2(newPosition.y - oldPosition.y, newPosition.x - oldPosition.x);
+            
+            // Set the global rotation using quaternions
+            const euler = new THREE.Euler(Math.PI/2, 0, angle + Math.PI/2, 'YZX');
+            const quaternion = new THREE.Quaternion().setFromEuler(euler);
+            driver.model.quaternion.copy(quaternion);
+            //console.log(angle);
+            
+            // Move the model to the new position
+            driver.model.position.set(newPosition.x, newPosition.y, 0);
         }
     });
     controls.update(); // Only required if damping or auto-rotation is enabled
