@@ -21,8 +21,8 @@ scene.add(directionalLight);
 
 
 // Driver IDs and colors
-const drivers = [1, 44, 55, 63];
-const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00]; // Red, Green, Blue, Yellow
+const drivers = [1, 44, 55, 4];
+const colors = [0x3671C6, 0x27f4d2, 0xe8002d, 0xff8000]; // Red, Green, Blue, Yellow
 const driverData = {};
 
 // Function to create a cube for each driver
